@@ -71,3 +71,51 @@ En estos casos, el algoritmo requiere menos pasadas de fusión, lo que reduce el
 | Rendimiento medio                  | Levemente más lento por copias     | Más rápido en la práctica          | El más lento de los tres       |
 | Estabilidad                        | Sí                                 | Depende de la implementación       | Sí                             |
 | Espacio extra                      | O(n) (usa arreglo auxiliar)        | O(log n) (uso de pila)             | O(1) (no requiere extra)       |
+
+----
+## Ejemplo sencillo
+
+Dado el arreglo:
+
+```bash
+ [3, 4, 6, 1, 2, 8, 5, 7]
+```
+
+Paso 1.Identificación de runs naturales:
+
+```bash
+ [3, 4, 6]
+```
+```bash
+ [1, 2, 8]
+```
+```bash
+ [5, 7]
+```
+Paso 2. Distribución en archivos:
+
+```bash
+ A → [3,4,6], [5,7]
+```
+```bash
+ B → [1,2,8]
+```
+Paso 3. Primera mezcla:
+
+```bash
+ Resultado → [1,2,3,4,6,8,5,7]
+```
+Paso 4. Segunda identificación de runs:
+
+```bash
+[1,2,3,4,6,8]
+```
+```bash
+[5,7]
+```
+Paso 5. Segunda mezcla → lista final ordenada
+
+```bash
+[1,2,3,4,5,6,7,8]
+```
+
