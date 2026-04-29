@@ -10,6 +10,24 @@ para posteriormente ordenarlas y fusionarlas, obteniendo así una lista final or
 
 ---
 
+### ¿Cómo funciona?
+
+Es un método de ordenamiento que:
+
+- Detecta runs o secuencias naturales de elementos ya ordenados.
+
+
+- Divide la lista en estas subsecuencias.
+
+
+- Luego las va mezclando (merge) sucesivamente hasta obtener una lista ordenada completa.
+
+
+A diferencia del Merge Sort tradicional, no divide la lista a la mitad, sino que identifica automáticamente las porciones ya ordenadas para optimizar el número de pasadas.
+
+
+---
+
 ## Análisis de complejidad
 
 La complejidad de un algoritmo describe cuánto trabajo se necesita realizar en función del tamaño de los datos de entrada (n). 
