@@ -20,20 +20,18 @@ Cuantos más runs naturales existan, menos trabajo necesita realizar el algoritm
 
 ### Complejidad del método de mezcla natural
 
+El rendimiento del algoritmo Merge Sort se puede entender analizando dos aspectos principales: el tiempo que tarda en ejecutarse y la memoria que utiliza.
 
-- 🟢 **Mejor caso — O(n)**  
-  La lista ya está completamente ordenada. Solo existe un run; el algoritmo recorre los datos una sola vez y finaliza.
+- Complejidad temporal:
+Es de O(n log n), donde n representa el número de elementos a ordenar. Esto se debe a que el algoritmo divide repetidamente la lista en mitades (lo que genera aproximadamente log n niveles de división) y, en cada nivel, realiza un proceso de fusión que recorre todos los elementos, con un costo de O(n).
 
-- 🔵 **Caso promedio — O(n log n)**  
-  Existen varios runs de tamaño similar. Se realizan múltiples pasadas de fusión de forma logarítmica respecto al número de runs.
-
-- 🔴 **Peor caso — O(n log n)**  
-  Los datos están en orden inverso o completamente aleatorios. Cada elemento es su propio run (n runs de tamaño 1), por lo que se requiere el máximo número de pasadas.
+- Complejidad espacial:
+Es de O(n), ya que el algoritmo requiere espacio adicional para almacenar las sublistas temporales durante el proceso de fusión.
 
 
 ---
 
-## Casos de uso del método de mezcla natural
+## Aplicaciones
 
 El método de mezcla natural es especialmente útil en situaciones donde los datos presentan cierto grado de orden o cuando se trabaja con grandes volúmenes de información almacenados en archivos. 
 A diferencia de otros algoritmos de ordenamiento, este método no ignora el estado inicial de los datos, sino que lo aprovecha para optimizar el proceso.
@@ -72,7 +70,7 @@ En estos casos, el algoritmo requiere menos pasadas de fusión, lo que reduce el
 | Estabilidad                        | Sí                                 | Depende de la implementación       | Sí                             |
 | Espacio extra                      | O(n) (usa arreglo auxiliar)        | O(log n) (uso de pila)             | O(1) (no requiere extra)       |
 
-----
+---
 ## Ejemplo sencillo
 
 Dado el arreglo:
@@ -119,3 +117,108 @@ Paso 5. Segunda mezcla → lista final ordenada
 [1,2,3,4,5,6,7,8]
 ```
 
+## Ejemplo en Python 
+
+
+```bash
+import time
+import sys
+
+# Aumentar el limite de recursividad.
+# ya que se divide muchas veces la lista.
+sys.setrecursionlimit(100000)
+
+def merge_sort(lista):
+    """
+    Funcion principal del metodo de Mezcla Natural (Merge Sort).
+    Divide la lista recursivamente hasta llegar a elementos individuales.
+    """
+    if len(lista) > 1:
+        # 1. DIVIDIR: Encontramos el medio de la lista
+        medio = len(lista) // 2
+        izquierda = lista[:medio]
+        derecha = lista[medio:]
+
+        # Llamadas recursivas para seguir dividiendo las mitades
+        merge_sort(izquierda)
+        merge_sort(derecha)
+
+        # 2. MEZCLAR: Unimos las partes de forma ordenada
+        i = j = k = 0
+
+        # Comparamos los elementos de las dos sublistas
+        while i < len(izquierda) and j < len(derecha):
+            if izquierda[i] < derecha[j]:
+                lista[k] = izquierda[i]
+                i += 1
+            else:
+                lista[k] = derecha[j]
+                j += 1
+            k += 1
+
+        # Si quedaron elementos en la sublista izquierda, los agregamos
+        while i < len(izquierda):
+            lista[k] = izquierda[i]
+            i += 1
+            k += 1
+
+        # Si quedaron elementos en la sublista derecha, los agregamos
+        while j < len(derecha):
+            lista[k] = derecha[j]
+            j += 1
+            k += 1
+
+def cargar_datos(nombre_archivo):
+    """
+    Lee el archivo .txt y convierte cada linea en un numero entero.
+    """
+    try:
+        with open(nombre_archivo, 'r') as archivo:
+            return [int(linea.strip()) for linea in archivo]
+    except FileNotFoundError:
+        print(f"Error: No se encontro el archivo '{nombre_archivo}'")
+        return None
+
+def ejecutar_benchmark():
+    """
+    Carga, ordena y mide el tiempo en milisegundos.
+    """
+    print("=== Wiki-Benchmark: Algoritmos de Ordenamiento ===")
+    print("Metodo seleccionado: Mezcla Natural (Merge Sort)")
+
+    # Cargar los 50,000 numeros
+    datos = cargar_datos('datos.txt')
+
+    if datos is not None:
+        print(f"Exito: {len(datos)} numeros cargados.")
+        print("Iniciando ordenamiento...")
+
+        # --- INICIO DEL BENCHMARK ---
+        inicio = time.time()
+
+        merge_sort(datos)
+
+        fin = time.time()
+        # --- FIN DEL BENCHMARK ---
+
+        tiempo_total_ms = (fin - inicio) * 1000
+
+        print("\n¡Ordenamiento completado con exito!")
+        print(f"Tiempo total de ejecucion: {tiempo_total_ms:.2f} ms")
+        print(f"Primeros 5 numeros ordenados: {datos[:5]}")
+
+if __name__ == "__main__":
+    ejecutar_benchmark()
+```
+## Ejemplo de salida en consola
+
+```bash
+=== Wiki-Benchmark: Algoritmos de Ordenamiento ===
+Metodo seleccionado: Mezcla Natural (Merge Sort)
+Exito: 50000 numeros cargados.
+Iniciando ordenamiento...
+
+¡Ordenamiento completado con exito!
+Tiempo total de ejecucion: 89.49 ms
+Primeros 5 numeros ordenados: [5, 6, 7, 9, 10]
+```
